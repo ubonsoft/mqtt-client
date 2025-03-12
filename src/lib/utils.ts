@@ -38,3 +38,20 @@ export function timestampToDateOnlyNative(timestamp: number | string): string {
   // สร้างสตริงในรูปแบบ YYYY-MM-DD
   return `${year}-${month}-${day}`;
 }
+
+/**
+ * สุ่มอักษร A-Z ตัวใหญ่ และตัวเลข 0-9 จำนวน 10 ตัว
+ * @returns สตริงที่ประกอบด้วยตัวอักษร A-Z และตัวเลข 0-9 จำนวน 10 ตัว
+ */
+export function generateRandomAlphanumeric10(): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * charactersLength);
+    result += characters.charAt(randomIndex);
+  }
+  
+  return result;
+}
