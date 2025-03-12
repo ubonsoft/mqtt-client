@@ -1,48 +1,63 @@
 
-import React, { useState, useEffect } from "react";
-import { format } from "date-fns";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
+import React, { useState } from "react";
+import { timestampToDateOnly } from "@/lib/utils";
 
 const Index = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [formattedDate, setFormattedDate] = useState<string>("");
+  const [timestamp, setTimestamp] = useState<string>("");
+  const [dateOnly, setDateOnly] = useState<string>("");
 
-  useEffect(() => {
-    if (date) {
-      // Format the date to show only the date part (without time)
-      setFormattedDate(format(date, "yyyy-MM-dd"));
+  const handleConvert = () => {
+    try {
+      const result = timestampToDateOnly(timestamp);
+      setDateOnly(result);
+    } catch (error) {
+      console.error("เกิดข้อผิดพลาดในการแปลง timestamp:", error);
+      setDateOnly("รูปแบบ timestamp ไม่ถูกต้อง");
     }
-  }, [date]);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">แสดงวันที่</h1>
+        <h1 className="text-3xl font-bold mb-6">แปลง Timestamp เป็นวันที่</h1>
         
-        <div className="grid gap-6 mb-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>เลือกวันที่</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md border"
-              />
-            </CardContent>
-          </Card>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="mb-4">
+            <label htmlFor="timestamp" className="block text-sm font-medium text-gray-700 mb-1">
+              Timestamp:
+            </label>
+            <input
+              type="text"
+              id="timestamp"
+              value={timestamp}
+              onChange={(e) => setTimestamp(e.target.value)}
+              placeholder="ใส่ timestamp เช่น 1656633600000"
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
           
-          <Card>
-            <CardHeader>
-              <CardTitle>วันที่ที่เลือก (ไม่มีเวลา)</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl font-medium">{formattedDate}</div>
-            </CardContent>
-          </Card>
+          <button
+            onClick={handleConvert}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+          >
+            แปลงเป็นวันที่
+          </button>
+          
+          {dateOnly && (
+            <div className="mt-4">
+              <h2 className="text-lg font-semibold mb-2">ผลลัพธ์:</h2>
+              <p className="text-xl p-2 bg-gray-50 border border-gray-200 rounded-md">{dateOnly}</p>
+            </div>
+          )}
+          
+          <div className="mt-6 text-sm text-gray-600">
+            <p>ตัวอย่าง Timestamp:</p>
+            <ul className="list-disc pl-5 mt-1">
+              <li>1656633600000 (30 มิถุนายน 2022)</li>
+              <li>1672531200000 (1 มกราคม 2023)</li>
+              <li>1687392000000 (22 มิถุนายน 2023)</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
