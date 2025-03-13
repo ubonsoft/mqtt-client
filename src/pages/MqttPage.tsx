@@ -11,8 +11,8 @@ import { toast } from "@/components/ui/use-toast";
 import { generateRandomAlphanumeric10 } from '@/lib/utils';
 
 // ค่าเริ่มต้นสำหรับ MQTT broker
-const DEFAULT_BROKER = 'wss://139.162.74.254:8084/mqtt';
-const DEFAULT_TOPIC = 'thai/mqtt/test';
+const DEFAULT_BROKER = '';
+const DEFAULT_TOPIC = '';
 
 const MqttPage: React.FC = () => {
   const [broker, setBroker] = useState(DEFAULT_BROKER);
