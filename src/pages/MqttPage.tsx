@@ -77,37 +77,38 @@ const MqttPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+    <div className="min-h-screen bg-green-50 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <Card className="mb-6">
-          <CardHeader>
+        <Card className="mb-6 border-green-200 shadow-md">
+          <CardHeader className="bg-green-100 rounded-t-lg">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-2xl">MQTT Event Listener</CardTitle>
-              <Badge variant={isConnected ? "success" : "destructive"}>
+              <CardTitle className="text-2xl text-green-800">MQTT Event Listener</CardTitle>
+              <Badge variant={isConnected ? "default" : "destructive"} className={isConnected ? "bg-green-500" : ""}>
                 {isConnected ? "เชื่อมต่อแล้ว" : "ไม่ได้เชื่อมต่อ"}
               </Badge>
             </div>
-            <CardDescription>
+            <CardDescription className="text-green-700">
               ฟังและรับข้อความจาก MQTT broker
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             <div className="mb-4">
               <div className="flex items-center gap-2">
-                <span className="font-semibold">Broker URL:</span>
+                <span className="font-semibold text-green-800">Broker URL:</span>
                 {isEditing ? (
                   <Input 
                     value={broker} 
                     onChange={(e) => setBroker(e.target.value)}
-                    className="flex-1"
+                    className="flex-1 border-green-300 focus:ring-green-500"
                   />
                 ) : (
-                  <span className="flex-1">{broker}</span>
+                  <span className="flex-1 text-green-700">{broker}</span>
                 )}
                 <Button 
                   onClick={() => setIsEditing(!isEditing)} 
                   variant="outline" 
                   size="sm"
+                  className="border-green-400 text-green-700 hover:bg-green-100"
                 >
                   {isEditing ? "บันทึก" : "แก้ไข"}
                 </Button>
@@ -115,10 +116,10 @@ const MqttPage: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <div className="font-semibold mb-2">Topic ที่ Subscribe:</div>
+              <div className="font-semibold mb-2 text-green-800">Topic ที่ Subscribe:</div>
               <div className="flex flex-wrap gap-2 mb-2">
                 {subscribedTopics.map((topic) => (
-                  <Badge key={topic} variant="secondary">{topic}</Badge>
+                  <Badge key={topic} variant="secondary" className="bg-green-200 text-green-800">{topic}</Badge>
                 ))}
               </div>
               <div className="flex gap-2">
@@ -128,44 +129,57 @@ const MqttPage: React.FC = () => {
                   placeholder="ใส่ topic ที่ต้องการ subscribe"
                   ref={topicInputRef}
                   onKeyPress={(e) => e.key === 'Enter' && handleSubscribe()}
+                  className="border-green-300 focus:ring-green-500"
                 />
-                <Button onClick={handleSubscribe}>Subscribe</Button>
+                <Button 
+                  onClick={handleSubscribe}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Subscribe
+                </Button>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Tabs defaultValue="listen">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="listen">รับข้อความ</TabsTrigger>
-            <TabsTrigger value="send">ส่งข้อความ</TabsTrigger>
+        <Tabs defaultValue="listen" className="mt-6">
+          <TabsList className="grid w-full grid-cols-2 mb-4 bg-green-100">
+            <TabsTrigger value="listen" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">รับข้อความ</TabsTrigger>
+            <TabsTrigger value="send" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">ส่งข้อความ</TabsTrigger>
           </TabsList>
           
           <TabsContent value="listen">
-            <Card>
-              <CardHeader>
+            <Card className="border-green-200 shadow-md">
+              <CardHeader className="bg-green-100 rounded-t-lg">
                 <div className="flex items-center justify-between">
-                  <CardTitle>ข้อความที่ได้รับ</CardTitle>
-                  <Button variant="outline" size="sm" onClick={clearMessages}>ล้างข้อความ</Button>
+                  <CardTitle className="text-green-800">ข้อความที่ได้รับ</CardTitle>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={clearMessages}
+                    className="border-green-400 text-green-700 hover:bg-green-100"
+                  >
+                    ล้างข้อความ
+                  </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="h-[400px] rounded-md border p-4">
+                <ScrollArea className="h-[400px] rounded-md border border-green-200 p-4 bg-white">
                   {messages.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">
+                    <div className="text-center py-8 text-green-500">
                       ยังไม่มีข้อความ
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {messages.map((msg, index) => (
-                        <div key={index} className="p-3 border rounded-md bg-gray-50">
+                        <div key={index} className="p-3 border border-green-100 rounded-md bg-green-50">
                           <div className="flex justify-between mb-1">
-                            <Badge variant="outline">{msg.topic}</Badge>
-                            <span className="text-xs text-gray-500">
+                            <Badge variant="outline" className="border-green-300 text-green-700">{msg.topic}</Badge>
+                            <span className="text-xs text-green-600">
                               {new Date(msg.timestamp).toLocaleTimeString()}
                             </span>
                           </div>
-                          <div className="font-mono text-sm break-all">
+                          <div className="font-mono text-sm break-all text-green-800">
                             {msg.message}
                           </div>
                         </div>
@@ -178,27 +192,28 @@ const MqttPage: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="send">
-            <Card>
-              <CardHeader>
-                <CardTitle>ส่งข้อความ</CardTitle>
-                <CardDescription>
+            <Card className="border-green-200 shadow-md">
+              <CardHeader className="bg-green-100 rounded-t-lg">
+                <CardTitle className="text-green-800">ส่งข้อความ</CardTitle>
+                <CardDescription className="text-green-700">
                   ส่งข้อความไปยัง MQTT topic
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium mb-1 text-green-800">
                       Topic (ถ้าไม่ระบุจะใช้ค่าเริ่มต้น: {DEFAULT_TOPIC})
                     </label>
                     <Input
                       value={customTopic}
                       onChange={(e) => setCustomTopic(e.target.value)}
                       placeholder={DEFAULT_TOPIC}
+                      className="border-green-300 focus:ring-green-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium mb-1 text-green-800">
                       ข้อความ
                     </label>
                     <div className="flex gap-2">
@@ -207,10 +222,12 @@ const MqttPage: React.FC = () => {
                         onChange={(e) => setMessageText(e.target.value)}
                         placeholder="ใส่ข้อความที่ต้องการส่ง"
                         onKeyPress={(e) => e.key === 'Enter' && handlePublish()}
+                        className="border-green-300 focus:ring-green-500"
                       />
                       <Button 
                         variant="outline"
                         onClick={handleGenerateRandomMessage}
+                        className="border-green-400 text-green-700 hover:bg-green-100"
                       >
                         สุ่ม
                       </Button>
@@ -218,8 +235,13 @@ const MqttPage: React.FC = () => {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button onClick={handlePublish} className="w-full">ส่งข้อความ</Button>
+              <CardFooter className="bg-green-50">
+                <Button 
+                  onClick={handlePublish} 
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  ส่งข้อความ
+                </Button>
               </CardFooter>
             </Card>
           </TabsContent>
