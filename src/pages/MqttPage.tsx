@@ -10,8 +10,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from "@/components/ui/use-toast";
 import { generateRandomAlphanumeric10 } from '@/lib/utils';
 
-// ค่าเริ่มต้นสำหรับ MQTT broker (ใช้ broker สาธารณะสำหรับทดสอบ)
-const DEFAULT_BROKER = 'wss://broker.emqx.io:8084/mqtt';
+// ค่าเริ่มต้นสำหรับ MQTT broker
+const DEFAULT_BROKER = 'mqtt://139.162.74.254:1888';
 const DEFAULT_TOPIC = 'thai/mqtt/test';
 
 const MqttPage: React.FC = () => {
